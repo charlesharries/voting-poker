@@ -1,31 +1,23 @@
-<nav x-data="{ open: false }">
-    <!-- Primary Navigation Menu -->
-    <div>
-        <div>
-            <div>
-                <!-- Navigation Links -->
-                <div>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-            </div>
+<nav>
+    <p>{{ current_user()->name }}</p>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <div>{{ Auth::user()->name }}</div>
+    <ul class="cluster">
+        <li>
+            <a href="{{ route('dashboard') }}">
+                Dashboard
+            </a>
+        </li>
 
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
+        <!-- Authentication -->
+        <li>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
 
-                    <x-dropdown-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-dropdown-link>
-                </form>
-            </div>
-        </div>
-    </div>
+                <a href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); this.closest('form').submit();">
+                    {{ __('Log Out') }}
+                </a>
+            </form>
+        </li>
+    </ul>
 </nav>

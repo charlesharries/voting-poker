@@ -7,16 +7,14 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-
             <x-text-input id="name" type="text" name="name" :value="old('name')" required
                 autofocus />
         </div>
 
         <div>
-            <x-primary-button class="ml-4">
+            <x-button class="ml-4" type="submit">
                 {{ __('Register') }}
-            </x-primary-button>
+            </x-button>
         </div>
     </form>
 </x-guest-layout>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RoomsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,10 +19,15 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $rooms = current_user()->rooms;
+    return view('dashboard', compact('rooms'));
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/rooms', [RoomsController::class, 'create'])->name('rooms');
-Route::post('/rooms', [RoomsController::class, 'store']);
+Route::get('/rooms', [RoomsController::class, 'create'])->name('rooms.new');
+Route::post('/rooms', [RoomsController::class, 'store'])->name('rooms');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/rooms/{room}', [RoomsController::class, 'show'])->name('rooms.show');
+});
 
 require __DIR__ . '/auth.php';

@@ -1,1 +1,9 @@
+@import 'reset.css';
 
+:root {
+    --danger: crimson;
+}
+
+.text-red {
+    color: var(--danger);
+}
