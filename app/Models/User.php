@@ -36,4 +36,9 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [];
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
 }
