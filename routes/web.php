@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\RoomsController;
+use App\Http\Controllers\VotesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,8 @@ Route::post('/rooms', [RoomsController::class, 'store'])->name('rooms');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/rooms/{room}', [RoomsController::class, 'show'])->name('rooms.show');
+    Route::post('/rooms/{room}/votes', [VotesController::class, 'store'])->name('rooms.votes');
+    Route::delete('/rooms/{room}/votes', [VotesController::class, 'reset']);
 });
 
 require __DIR__ . '/auth.php';

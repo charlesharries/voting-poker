@@ -32,4 +32,9 @@ class Room extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
 }

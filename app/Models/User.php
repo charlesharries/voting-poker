@@ -41,4 +41,19 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Room::class)->withTimestamps();
     }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    public function voteFor(Room $room)
+    {
+        return optional($this->votes()->where('room_id', $room->id)->first())->value;
+    }
+
+    public function isAdmin(Room $room)
+    {
+        return $room->owner->id == $this->id;
+    }
 }
