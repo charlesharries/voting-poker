@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\RoomJoined;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,8 @@ class RoomsController extends Controller
     public function show(Room $room)
     {
         $room->users()->syncWithoutDetaching(current_user()->id);
+
+        event(new RoomJoined($room, current_user()));
 
         return view('rooms.show', compact('room'));
     }
