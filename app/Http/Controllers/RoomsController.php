@@ -30,9 +30,12 @@ class RoomsController extends Controller
 
     public function show(Room $room)
     {
+        $isInRoom = $room->users->pluck("id")->contains(current_user()->id);
         $room->users()->syncWithoutDetaching(current_user()->id);
 
-        event(new RoomJoined($room, current_user()));
+        if (!$isInRoom) {
+            event(new RoomJoined($room, current_user()));
+        }
 
         return view('rooms.show', compact('room'));
     }

@@ -10,11 +10,8 @@
     <h2>Members</h2>
     <ul id="users">
         @foreach ($room->users as $user)
-            <li data-id="{{ $user->id }}">
+            <li data-id="{{ $user->id }}" class="{{ $user->voteFor($room) ? "voted" : "" }}">
                 {{ $user->name }}
-                @if ($user->voteFor($room))
-                    &check;
-                @endif
             </li>
         @endforeach
     </ul>

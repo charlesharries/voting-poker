@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Voted;
 use App\Models\Room;
 use App\Models\Vote;
 use Illuminate\Validation\Rule;
@@ -19,6 +20,8 @@ class VotesController extends Controller
             ['user_id' => current_user()->id],
             $attributes + ['user_id' => current_user()->id]
         );
+
+        event(new Voted($room, current_user(), $attributes['value']));
 
         return redirect()->back();
     }

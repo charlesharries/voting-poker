@@ -7,3 +7,9 @@
 .text-red {
     color: var(--danger);
 }
+
+.voted::after {
+    content: "\002713";
+    display: inline-block;
+    margin-inline-start: 5px;
+}

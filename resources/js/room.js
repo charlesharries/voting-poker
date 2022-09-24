@@ -14,9 +14,13 @@ function main() {
         $users.appendChild($li);
     }
 
+    function getUser(userID) {
+        return $users.querySelector(`[data-id="${userID}"]`);
+    }
+
     function removeUser(user) {
-        const $user = $users.querySelector(`[data-id="${user.id}"]`);
-        $user.remove();
+        const $user = getUser(user.id);
+        if ($user) $user.remove();
     }
 
     function getUuid() {
@@ -24,19 +28,27 @@ function main() {
         return url.pathname.replace("/rooms/", "");
     }
 
-    function roomJoined(event) {
+    function handleRoomJoined(event) {
         if (!event.user) return;
         addUser(event.user);
     }
 
-    function roomLeft(event) {
+    function handleRoomLeft(event) {
         if (!event.user) return;
         removeUser(event.user);
     }
 
+    function handleVoted(event) {
+        console.log('voted', {event});
+        if (! (event.user && event.vote)) return;
+        const $user = getUser(event.user.id);
+        if ($user) $user.classList.add("voted");
+    }
+
     echo.private(`rooms.${uuid}`)
-        .listen("RoomJoined", roomJoined)
-        .listen("RoomLeft", roomLeft);
+        .listen("RoomJoined", handleRoomJoined)
+        .listen("RoomLeft", handleRoomLeft)
+        .listen("Voted", handleVoted);
 }
 
 main();
