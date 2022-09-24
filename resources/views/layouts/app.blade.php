@@ -12,6 +12,10 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        @if (isset($head))
+            {{ $head }}
+        @endif
     </head>
 
     <body>

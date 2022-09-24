@@ -33,6 +33,3 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
     // disableStats: true,
 });
-
-window.Echo.private(`rooms.c66f860a-de14-465e-959d-19a64462de2b`)
-    .listen('RoomJoined', (event) => console.log({event}));

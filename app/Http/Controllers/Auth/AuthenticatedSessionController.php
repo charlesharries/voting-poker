@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\RoomLeft;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
@@ -19,9 +20,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user = Auth::user();
+        $user = current_user();
 
         Auth::guard('web')->logout();
+
+        // TODO: All of this probably belongs in an event listener.
+        $user->rooms->each(function ($room) use ($user) {
+            event(new RoomLeft($room, $user));
+            if ($user->isAdmin($room)) {
+                $room->delete();
+            }
+        });
 
         if ($user instanceof User) {
             $user->delete();

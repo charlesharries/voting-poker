@@ -3,10 +3,14 @@
         <h1>{{ $room->name }}</h1>
     </x-slot>
 
+    <x-slot name="head">
+        @vite(['resources/js/room.js'])
+    </x-slot>
+
     <h2>Members</h2>
-    <ul>
+    <ul id="users">
         @foreach ($room->users as $user)
-            <li>
+            <li data-id="{{ $user->id }}">
                 {{ $user->name }}
                 @if ($user->voteFor($room))
                     &check;
