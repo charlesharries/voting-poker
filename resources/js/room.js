@@ -39,16 +39,21 @@ function main() {
     }
 
     function handleVoted(event) {
-        console.log('voted', {event});
         if (! (event.user && event.vote)) return;
         const $user = getUser(event.user.id);
         if ($user) $user.classList.add("voted");
     }
 
+    function reloadPage() {
+        window.location.reload();
+    }
+
     echo.private(`rooms.${uuid}`)
         .listen("RoomJoined", handleRoomJoined)
         .listen("RoomLeft", handleRoomLeft)
-        .listen("Voted", handleVoted);
+        .listen("Voted", handleVoted)
+        .listen("VotingFinished", reloadPage)
+        .listen("RoomReset", reloadPage);
 }
 
 main();

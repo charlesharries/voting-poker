@@ -14,6 +14,7 @@ class Room extends Model
         'name',
         'uuid',
         'user_id',
+        'is_finished_voting',
     ];
 
     public function getRouteKeyName()
@@ -36,5 +37,16 @@ class Room extends Model
     public function votes()
     {
         return $this->hasMany(Vote::class);
+    }
+
+    public function finishVoting()
+    {
+        $this->update(['is_finished_voting' => true]);
+    }
+
+    public function reset()
+    {
+        $this->votes()->delete();
+        $this->update(['is_finished_voting' => false]);
     }
 }

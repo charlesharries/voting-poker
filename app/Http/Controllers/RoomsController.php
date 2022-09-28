@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\RoomJoined;
+use App\Events\VotingFinished;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,5 +39,17 @@ class RoomsController extends Controller
         }
 
         return view('rooms.show', compact('room'));
+    }
+
+    public function finish(Room $room)
+    {
+        if ($room->owner->id !== current_user()->id) {
+            session()->flash("info", "You're not allowed to do that.");
+            return redirect()->back();
+        }
+
+        $room->finishVoting();
+        event(new VotingFinished($room, current_user()));
+        return redirect()->back();
     }
 }

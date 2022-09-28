@@ -12,4 +12,9 @@ class Vote extends Model
     public static $options = [1, 2, 3, 5, 8, 13, 21];
 
     public $fillable = ['user_id', 'room_id', 'value'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

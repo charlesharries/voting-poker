@@ -2,6 +2,6 @@
 
 namespace App\Events;
 
-class RoomLeft extends RoomEvent
+class RoomReset extends RoomEvent
 {
 }

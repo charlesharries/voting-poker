@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\RoomReset;
 use App\Events\Voted;
 use App\Models\Room;
 use App\Models\Vote;
@@ -33,7 +34,8 @@ class VotesController extends Controller
             return redirect()->back();
         }
 
-        $room->votes()->delete();
+        $room->reset();
+        event(new RoomReset($room, current_user()));
         return redirect()->back();
     }
 }

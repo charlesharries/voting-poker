@@ -29,6 +29,7 @@ Route::post('/rooms', [RoomsController::class, 'store'])->name('rooms');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/rooms/{room}', [RoomsController::class, 'show'])->name('rooms.show');
+    Route::post('/rooms/{room}/finish', [RoomsController::class, 'finish'])->name('rooms.finish');
     Route::post('/rooms/{room}/votes', [VotesController::class, 'store'])->name('rooms.votes');
     Route::delete('/rooms/{room}/votes', [VotesController::class, 'reset']);
 });

@@ -4,20 +4,9 @@ namespace App\Events;
 
 use App\Models\Room;
 use App\Models\User;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 
-class Voted implements ShouldBroadcast
+class Voted extends RoomEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    public Room $room;
-    public User $user;
     public string $vote;
 
     /**
@@ -30,15 +19,5 @@ class Voted implements ShouldBroadcast
         $this->room = $room;
         $this->user = $user;
         $this->vote = $vote;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('rooms.' . $this->room->uuid);
     }
 }
