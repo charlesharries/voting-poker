@@ -4,6 +4,15 @@ import { copyToClipboard } from "./copy";
 /** @type {Echo} */
 const echo = window.Echo;
 
+function newElement(tag, content, attributes) {
+    const $el = document.createElement(tag);
+    $el.textContent = content;
+    Object.keys(attributes).forEach((attr) => {
+        $el.setAttribute(attr, attributes[attr]);
+    })
+    return $el;
+}
+
 function main() {
     const uuid = getUuid();
     const $users = document.getElementById("users");
@@ -16,9 +25,16 @@ function main() {
     }
 
     function addUser(user) {
-        const $li = document.createElement("li");
-        $li.setAttribute("data-id", user.id);
+        const $li = newElement("li", user.name, { "data-id": user.id });
         $li.textContent = user.name;
+        const $kickButton = newElement("button", "Boot", {
+            type: "submit",
+            name: "userId",
+            form: "boot",
+            value: user.id,
+        });
+
+        $li.appendChild($kickButton);
         $users.appendChild($li);
     }
 

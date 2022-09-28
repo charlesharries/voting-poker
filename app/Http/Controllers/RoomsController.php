@@ -52,10 +52,15 @@ class RoomsController extends Controller
         return redirect()->back();
     }
 
-    public function boot(Room $room, User $user)
+    public function boot(Room $room, Request $request)
     {
         abort_if(!current_user()->can('update-room', $room), 403);
 
+        // Find the relevant user
+        $attributes = $request->validate([
+            'userId' => ['numeric', 'exists:users,id'],
+        ]);
+        $user = User::find($attributes['userId']);
 
         // Get rid of the user
         $copy = $user->toArray(); // copy for event
