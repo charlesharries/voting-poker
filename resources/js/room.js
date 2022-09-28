@@ -1,4 +1,5 @@
 import Echo from "laravel-echo";
+import { copyToClipboard } from "./copy";
 
 /** @type {Echo} */
 const echo = window.Echo;
@@ -6,6 +7,7 @@ const echo = window.Echo;
 function main() {
     const uuid = getUuid();
     const $users = document.getElementById("users");
+    const $copyURL = document.getElementById("copyURL");
 
     function currentUserId() {
         const el = document.getElementById("current_user");
@@ -65,6 +67,14 @@ function main() {
         window.location.reload();
     }
 
+    async function copyURL() {
+        await copyToClipboard(window.location.href);
+        $copyURL.innerText = "Copied!";
+        setTimeout(() => {
+            $copyURL.innerText = "Copy room URL";
+        }, 2000);
+    }
+
     echo.private(`rooms.${uuid}`)
         .listen("RoomJoined", handleRoomJoined)
         .listen("RoomLeft", handleRoomLeft)
@@ -72,6 +82,8 @@ function main() {
         .listen("VotingFinished", reloadPage)
         .listen("RoomReset", reloadPage)
         .listen("UserKicked", handleUserKicked);
+
+    $copyURL.addEventListener("click", copyURL);
 
     // document.querySelectorAll(".boot").forEach(($el) => {
     //     $el.addEventListener("submit", (event) => {

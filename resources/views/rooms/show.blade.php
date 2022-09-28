@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h1>{{ $room->name }}</h1>
+        <button type="button" id="copyURL">Copy room URL</button>
     </x-slot>
 
     <x-slot name="head">
