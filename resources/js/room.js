@@ -7,6 +7,12 @@ function main() {
     const uuid = getUuid();
     const $users = document.getElementById("users");
 
+    function currentUserId() {
+        const el = document.getElementById("current_user");
+        if (!el) return null;
+        return parseInt(el.dataset.userId, 10);
+    }
+
     function addUser(user) {
         const $li = document.createElement("li");
         $li.setAttribute("data-id", user.id);
@@ -19,6 +25,12 @@ function main() {
     }
 
     function removeUser(user) {
+        console.log(user.id, currentUserId())
+        if (user.id === currentUserId()) {
+            window.location.reload();
+            return;
+        }
+
         const $user = getUser(user.id);
         if ($user) $user.remove();
     }
@@ -44,6 +56,11 @@ function main() {
         if ($user) $user.classList.add("voted");
     }
 
+    function handleUserKicked(event) {
+        if (!event.user) reloadPage();
+        removeUser(event.user);
+    }
+
     function reloadPage() {
         window.location.reload();
     }
@@ -53,7 +70,14 @@ function main() {
         .listen("RoomLeft", handleRoomLeft)
         .listen("Voted", handleVoted)
         .listen("VotingFinished", reloadPage)
-        .listen("RoomReset", reloadPage);
+        .listen("RoomReset", reloadPage)
+        .listen("UserKicked", handleUserKicked);
+
+    // document.querySelectorAll(".boot").forEach(($el) => {
+    //     $el.addEventListener("submit", (event) => {
+    //         echo.private(`rooms.${uuid}`).stopListening("UserKicked");
+    //     })
+    // });
 }
 
 main();

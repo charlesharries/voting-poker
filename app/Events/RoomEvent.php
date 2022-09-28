@@ -14,7 +14,7 @@ class RoomEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public User $user;
+    public User|array $user;
 
     public Room $room;
 
@@ -23,7 +23,7 @@ class RoomEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Room $room, User $user)
+    public function __construct(Room $room, User|array $user)
     {
         $this->room = $room;
         $this->user = $user;

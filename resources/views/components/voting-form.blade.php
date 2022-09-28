@@ -7,6 +7,13 @@
     @foreach ($room->users as $user)
         <li data-id="{{ $user->id }}" class="{{ $user->voteFor($room) ? "voted" : "" }}">
             {{ $user->name }}
+
+            <form action="{{ route('rooms.users', [$room, $user]) }}" class="boot" method="POST">
+                @csrf
+                @method("DELETE")
+
+                <button type="submit">Boot</button>
+            </form>
         </li>
     @endforeach
 </ul>

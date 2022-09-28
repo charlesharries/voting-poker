@@ -22,6 +22,17 @@
         <div>
             @include('layouts.navigation')
 
+            @if(Auth::check())
+                <input
+                    id="current_user"
+                    type="hidden"
+                    value="{{ current_user()->id }}"
+                    name="current_user"
+                    data-user-id="{{ current_user()->id }}"
+                    data-username="{{ current_user()->name }}"
+                />
+            @endif
+
             <!-- Page Heading -->
             <header>
                 {{ $header }}

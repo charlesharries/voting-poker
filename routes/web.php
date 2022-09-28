@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/rooms/{room}/finish', [RoomsController::class, 'finish'])->name('rooms.finish');
     Route::post('/rooms/{room}/votes', [VotesController::class, 'store'])->name('rooms.votes');
     Route::delete('/rooms/{room}/votes', [VotesController::class, 'reset']);
+    Route::delete('/rooms/{room}/users/{user}', [RoomsController::class, 'boot'])->name('rooms.users');
 });
 
 require __DIR__ . '/auth.php';

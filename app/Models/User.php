@@ -54,6 +54,6 @@ class User extends Authenticatable
 
     public function isAdmin(Room $room)
     {
-        return $room->owner->id == $this->id;
+        return optional($room->owner)->id == $this->id;
     }
 }

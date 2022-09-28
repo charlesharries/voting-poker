@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\RoomJoined;
+use App\Events\UserKicked;
 use App\Events\VotingFinished;
 use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class RoomsController extends Controller
@@ -33,6 +34,7 @@ class RoomsController extends Controller
     {
         $isInRoom = $room->users->pluck("id")->contains(current_user()->id);
         $room->users()->syncWithoutDetaching(current_user()->id);
+        $room->refresh();
 
         if (!$isInRoom) {
             event(new RoomJoined($room, current_user()));
@@ -43,13 +45,29 @@ class RoomsController extends Controller
 
     public function finish(Room $room)
     {
-        if ($room->owner->id !== current_user()->id) {
-            session()->flash("info", "You're not allowed to do that.");
-            return redirect()->back();
-        }
+        abort_if(!current_user()->can('update-room', $room), 403);
 
         $room->finishVoting();
         event(new VotingFinished($room, current_user()));
         return redirect()->back();
+    }
+
+    public function boot(Room $room, User $user)
+    {
+        abort_if(!current_user()->can('update-room', $room), 403);
+
+
+        // Get rid of the user
+        $copy = $user->toArray(); // copy for event
+        $room->users()->detach($user->id);
+        $user->refresh();
+        if (!$user->rooms()->exists()) {
+            $user->delete();
+        }
+
+        event(new UserKicked($room, $copy));
+        $room->refresh();
+
+        return redirect()->route('rooms.show', $room);
     }
 }
